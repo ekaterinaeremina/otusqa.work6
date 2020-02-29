@@ -83,14 +83,12 @@
           <configuration>
             <includes>
               <include>BaseTest.java</include>
-              <include>LoginPage.java</include>
+              <include>OtusSiteTest.java</include>
             </includes>
             <systemPropertyVariables>
               <browser>CHROME</browser>
               <browser>${browser}</browser>
-              <login></login>
               <login>${login}</login>
-              <password></password>
               <password>${password}</password>
             </systemPropertyVariables>
           </configuration>

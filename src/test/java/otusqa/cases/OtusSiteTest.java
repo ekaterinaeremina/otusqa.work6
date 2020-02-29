@@ -76,24 +76,29 @@ public class OtusSiteTest extends BaseTest {
                 .setFormatWork(WorkFormates);
 
         ArrayList<Pair<ContactType,String>> ExpectedContacts = personalPage.getContacts();
-        for (Pair<ContactType,String> contact : contacts) {
-            personalPage = personalPage.addNewContact(contact.getKey(), contact.getValue());
-        }
+        ExpectedContacts.addAll(contacts);
+        Set set = new HashSet(ExpectedContacts);
+        ExpectedContacts = new ArrayList(set);
+        Collections.sort(ExpectedContacts, new ContactTypeComparator());
 
-        personalPage = personalPage.setGender(gender)
-        .setCompany(config.Company())
-        .setPosition(config.Position());
+        personalPage = personalPage.addNewListContact(contacts)
+                .setGender(gender)
+                .setCompany(config.Company())
+                .setPosition(config.Position());
 
         ArrayList<Pair<ProgrammingLanguage,ExperienceLevel>> ExpectedExpeience = personalPage.getExperience();
-        for (Pair<ProgrammingLanguage,ExperienceLevel> exp : experience) {
-            personalPage = personalPage.addExperience(exp.getKey(), exp.getValue());
-        }
+        ExpectedExpeience.addAll(experience);
+        set = new HashSet(ExpectedExpeience);
+        ExpectedExpeience = new ArrayList(set);
+        Collections.sort(ExpectedExpeience, new ProgrammingLanguageComparator());
 
-        personalPage = personalPage.saveAndProceed()
-        .signOut()
-        .goToLoginPage()
-        .signIn()
-        .open();
+        personalPage = personalPage.addListExperience(experience)
+                .saveAndProceed()
+                .signOut()
+                .goToLoginPage()
+                .signIn()
+                .open();
+
 
         SoftAssert softAssert=new SoftAssert();
 
@@ -106,10 +111,6 @@ public class OtusSiteTest extends BaseTest {
         softAssert.assertEquals(personalPage.getReadyToRelocate(), false, "Ready to locate is not correct" );
         softAssert.assertEquals(personalPage.getFormatWork(), WorkFormates, "Work formate is not correct");
 
-        ExpectedContacts.addAll(contacts);
-        Set set = new HashSet(ExpectedContacts);
-        ExpectedContacts = new ArrayList(set);
-        Collections.sort(ExpectedContacts, new ContactTypeComparator());
         ArrayList<Pair<ContactType,String>> ActualContacts = personalPage.getContacts();
         Collections.sort(ActualContacts, new ContactTypeComparator());
         softAssert.assertEquals(ActualContacts, ExpectedContacts, "Contacts is not correct");
@@ -118,10 +119,6 @@ public class OtusSiteTest extends BaseTest {
         softAssert.assertEquals(personalPage.getCompany(), config.Company(), "Company is not correct");
         softAssert.assertEquals(personalPage.getPosition(), config.Position(), "Position is not correct");
 
-        ExpectedExpeience.addAll(experience);
-        set = new HashSet(ExpectedExpeience);
-        ExpectedExpeience = new ArrayList(set);
-        Collections.sort(ExpectedExpeience, new ProgrammingLanguageComparator());
         ArrayList<Pair<ProgrammingLanguage, ExperienceLevel>> ActualExperience = personalPage.getExperience();
         Collections.sort(ActualExperience, new ProgrammingLanguageComparator());
         softAssert.assertEquals(ActualExperience, ExpectedExpeience, "Experience is not correct");

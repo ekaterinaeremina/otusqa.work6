@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import otusqa.helpers.*;
+import otusqa.steps.LoginSteps;
 
 public class StartPage extends AbstractPage{
 
@@ -28,11 +29,11 @@ public class StartPage extends AbstractPage{
         log.info("Go to " + otusUrl);
     }
 
-    public LoginPage goToLoginPage()
+    public LoginSteps goToLoginPage()
     {
         wait.until(ExpectedConditions.visibilityOf(EnterOrRegistration));
         EnterOrRegistration.click();
         log.info("Click to 'Вход и регистрация'");
-        return new LoginPage(driver);
+        return new LoginSteps(driver);
     }
 }
